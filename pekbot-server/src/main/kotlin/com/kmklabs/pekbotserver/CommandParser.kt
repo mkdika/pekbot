@@ -18,7 +18,7 @@ class CommandParser {
         text.split(" ").forEach { word ->
             if (word.contains("/")){
                 when(word) {
-                    "/promo" -> return PROMO
+                    "promo" -> return PROMO
                     else -> return UNRECOGNIZED
                 }
             }
