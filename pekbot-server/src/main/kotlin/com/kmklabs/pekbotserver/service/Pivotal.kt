@@ -55,12 +55,12 @@ class Pivotal: InitializingBean  {
 
         val response = pivotalHttp.getStory(projectId, storyId).execute()
 
-        when (response.code()) {
+        return when (response.code()) {
             200 -> {
-                return response.body()?.name
+                "Story Title: ${response.body()?.name}\nStatus: ${response.body()?.currentState}"
             }
             else -> {
-                return "error: ${response.body().toString()}"
+                "error: ${response.body().toString()}"
             }
         }
     }
