@@ -8,3 +8,5 @@ gokil:
     - "Jika kamu takut merasakan sahit hati saat diputusin pacar, lebih baik kamu putus duluan sebelum jadian."
     - "Mau gagal, mau sukses tidak penting, yang penting berhasil!"
     - "Sehat itu simple, kuncinya cuma satu, jangan sakit."
+
+pivotalApiKey: ${PIVOTAL_API_KEY}
