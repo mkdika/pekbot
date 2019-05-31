@@ -31,7 +31,6 @@ import java.util.*
 }
 */
 
-
 data class HttpRequest(
     val type: String,
     val eventTime: Date,
