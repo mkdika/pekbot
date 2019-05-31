@@ -12,20 +12,21 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import java.util.concurrent.TimeUnit
 import okhttp3.logging.HttpLoggingInterceptor
+import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
 import retrofit2.Call
 
 @Component
-class Pivotal  {
+class Pivotal: InitializingBean  {
 
     lateinit var pivotalHttp: PivotalHttp
 
     @Value("\${pivotalApiKey}")
     lateinit var pivotalApiKey: String
 
-    fun afterPropertiesSet() {
+    override fun afterPropertiesSet() {
        pivotalHttp = Retrofit.Builder()
-                .baseUrl("https://www.pivotaltracker.com/services/v5/projects")
+                .baseUrl("https://www.pivotaltracker.com/")
                 .addConverterFactory(JacksonConverterFactory.create(jacksonObjectMapper()))
                 .client(
                         OkHttpClient.Builder()
@@ -80,7 +81,7 @@ class Pivotal  {
     }
 
     interface PivotalHttp {
-        @GET("{projectId}/stories/{storyId}")
+        @GET("services/v5/projects/{projectId}/stories/{storyId}")
         fun getStory(@Path("projectId") projectId: String, @Path("storyId") storyId: String): Call<String>
     }
 }
