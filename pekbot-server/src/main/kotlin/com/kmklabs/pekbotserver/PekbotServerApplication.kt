@@ -42,8 +42,6 @@ class PekbotController {
 	@GetMapping("/health")
 	fun health() : ResponseEntity<String> {
 
-		logger.info("\n ${mapper.writerWithDefaultPrettyPrinter().writeValueAsString(httpRequest)}")
-
 		return ResponseEntity.ok("UP")
 	}
 }
