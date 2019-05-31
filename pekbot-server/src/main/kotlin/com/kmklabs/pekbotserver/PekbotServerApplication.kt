@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.springframework.beans.factory.annotation.Autowired
 
 @SpringBootApplication
 class PekbotServerApplication {
@@ -24,6 +25,9 @@ fun main(args: Array<String>) {
 @RestController
 class PekbotController {
 
+	@Autowired
+	lateinit var commanbdParser: CommandParser
+
 	companion object {
 		val logger: Log = LogFactory.getLog(this::class.java)
 		val mapper = ObjectMapper()
@@ -33,14 +37,14 @@ class PekbotController {
 	fun ping(@RequestBody httpRequest: HttpRequest) : ResponseEntity<HttpResponse> {
 
 		logger.info("\n ${mapper.writerWithDefaultPrettyPrinter().writeValueAsString(httpRequest)}")
-
+		val result = commanbdParser.parseCommand(httpRequest.message.text)
  		return ResponseEntity.ok(HttpResponse(
-			text = "Pong! ${httpRequest.message.sender.displayName}"
+			text = result
 		))
 	}
 
 	@GetMapping("/health")
-	fun health() : ResponseEntity<String> {
+	fun health(@RequestBody httpRequest: HttpRequest) : ResponseEntity<String> {
 
 		return ResponseEntity.ok("UP")
 	}
