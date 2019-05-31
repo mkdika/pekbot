@@ -5,7 +5,6 @@ import com.kmklabs.pekbotserver.model.StoryResponse
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
-import okhttp3.ResponseBody
 import org.springframework.stereotype.Component
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
@@ -16,6 +15,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
 import retrofit2.Call
+import retrofit2.http.Query
 
 @Component
 class Pivotal: InitializingBean  {
@@ -24,6 +24,11 @@ class Pivotal: InitializingBean  {
 
     @Value("\${pivotalApiKey}")
     lateinit var pivotalApiKey: String
+
+
+    companion object {
+        val projectToId = hashMapOf("web" to "1092060", "content" to "2241857", "homepage" to "2241851")
+    }
 
     override fun afterPropertiesSet() {
        pivotalHttp = Retrofit.Builder()
@@ -45,7 +50,16 @@ class Pivotal: InitializingBean  {
         val command = text.split(" ")
 
         if(command.count() >= 4) {
-            return getStory(command[2], command[3]).orEmpty()
+            val projectId = projectToId.get(command[2])
+            if (projectId.isNullOrBlank()) return "project tidak ketemu"
+            when (command[3]) {
+                "unscheduled", "unstarted", "started", "finished", "accepted", "rejected" -> {
+                    return getStoriesByState(projectId, command[3]).orEmpty()
+                }
+                else -> {
+                    return getStory(projectId, command[3]).orEmpty()
+                }
+            }
         } else {
             return "Parameter kurang"
         }
@@ -61,6 +75,34 @@ class Pivotal: InitializingBean  {
             }
             else -> {
                 "error: ${response.body().toString()}"
+            }
+        }
+    }
+
+    fun getStoriesByState(projectId: String, state: String): String? {
+        val stories = getStories(projectId, state)
+
+        if (stories != null && stories.isNotEmpty()) {
+            val responseLines = stories.map {
+                "[#${it.id}] ${it.name}"
+            }
+
+            return responseLines.joinToString("\n")
+        }
+
+        return "No $state stories"
+    }
+
+    fun getStories(projectId: String, state: String): List<StoryResponse>? {
+
+        val response = pivotalHttp.getStories(projectId, state).execute()
+
+        return when (response.code()) {
+            200 -> {
+                return response.body()
+            }
+            else -> {
+                null
             }
         }
     }
@@ -84,5 +126,8 @@ class Pivotal: InitializingBean  {
     interface PivotalHttp {
         @GET("services/v5/projects/{projectId}/stories/{storyId}")
         fun getStory(@Path("projectId") projectId: String, @Path("storyId") storyId: String): Call<StoryResponse>
+
+        @GET("services/v5/projects/{projectId}/stories?")
+        fun getStories(@Path("projectId") projectId: String, @Query("with_state") state: String): Call<List<StoryResponse>>
     }
 }
