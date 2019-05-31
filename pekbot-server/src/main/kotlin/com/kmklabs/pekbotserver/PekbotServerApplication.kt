@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.kmklabs.pekbotserver.usecase.GokilUsecase
 import org.springframework.beans.factory.annotation.Autowired
 
 @SpringBootApplication
@@ -43,7 +44,7 @@ class PekbotController {
 	}
 
 	@GetMapping("/health")
-	fun health(@RequestBody httpRequest: HttpRequest) : ResponseEntity<String> {
+	fun health() : ResponseEntity<String> {
 
 		return ResponseEntity.ok("UP")
 	}
