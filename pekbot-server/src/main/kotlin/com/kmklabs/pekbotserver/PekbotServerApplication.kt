@@ -15,8 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 
 @SpringBootApplication
-class PekbotServerApplication {
-}
+class PekbotServerApplication
 
 fun main(args: Array<String>) {
 	runApplication<PekbotServerApplication>(*args)

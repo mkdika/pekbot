@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 class CommandParser {
 
     fun parseCommand(text: String): String {
-        return when(parse(text)){
+        return when (parse(text)) {
             PROMO -> "Maaf, belum ada promo"
             else -> "Maaf, perintah tidak dimengerti :("
         }
@@ -16,11 +16,9 @@ class CommandParser {
 
     private fun parse(text: String): Commands {
         text.split(" ").forEach { word ->
-            if (word.contains("/")){
-                when(word) {
-                    "promo" -> return PROMO
-                    else -> return UNRECOGNIZED
-                }
+            when (word) {
+                "promo" -> return PROMO
+                else -> return UNRECOGNIZED
             }
         }
         return UNRECOGNIZED
