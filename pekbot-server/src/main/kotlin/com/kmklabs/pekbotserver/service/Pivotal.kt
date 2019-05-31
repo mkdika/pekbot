@@ -60,7 +60,7 @@ class Pivotal: InitializingBean  {
                 return response.body()?.name
             }
             else -> {
-                return "error"
+                return "error: ${response.body().toString()}"
             }
         }
     }
