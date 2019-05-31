@@ -20,13 +20,18 @@ class CommandParser {
     }
 
     private fun parse(text: String): Commands {
-        text.split(" ").forEach { word ->
-            when (word) {
-                "promo" -> return PROMO
-                "nasihat","nasehat" -> return NASIHAT
-                else -> return UNRECOGNIZED
-            }
+        val command = text.split(" ")
+
+        if(command.count() < 2) {
+            return UNRECOGNIZED
         }
+
+        when (command[1]) {
+            "promo" -> return PROMO
+            "nasihat","nasehat" -> return NASIHAT
+            else -> return UNRECOGNIZED
+        }
+
         return UNRECOGNIZED
     }
 }
