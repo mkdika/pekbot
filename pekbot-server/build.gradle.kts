@@ -25,6 +25,13 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	implementation("com.fasterxml.jackson.core:jackson-databind:2.9.7")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.7")
+	implementation("com.squareup.retrofit2:converter-jackson:2.5.0")
+	implementation("com.squareup.retrofit2:converter-scalars:2.5.0")
+	implementation("com.squareup.retrofit2:retrofit:2.5.0")
+	implementation("com.squareup.okhttp3:logging-interceptor:3.12.1")
 }
 
 tasks.withType<KotlinCompile> {
