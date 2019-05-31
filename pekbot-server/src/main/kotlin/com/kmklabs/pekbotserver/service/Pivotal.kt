@@ -1,6 +1,7 @@
 package com.kmklabs.pekbotserver.service
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.kmklabs.pekbotserver.model.StoryResponse
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -56,10 +57,10 @@ class Pivotal: InitializingBean  {
 
         when (response.code()) {
             200 -> {
-                return response.body()
+                return response.body()?.name
             }
             else -> {
-                return response.body()
+                return "error"
             }
         }
     }
@@ -82,6 +83,6 @@ class Pivotal: InitializingBean  {
 
     interface PivotalHttp {
         @GET("services/v5/projects/{projectId}/stories/{storyId}")
-        fun getStory(@Path("projectId") projectId: String, @Path("storyId") storyId: String): Call<String>
+        fun getStory(@Path("projectId") projectId: String, @Path("storyId") storyId: String): Call<StoryResponse>
     }
 }
