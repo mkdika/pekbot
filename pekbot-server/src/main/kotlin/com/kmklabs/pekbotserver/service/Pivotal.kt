@@ -27,7 +27,7 @@ class Pivotal: InitializingBean  {
 
 
     companion object {
-        val projectToId = hashMapOf("web" to "1092060", "content" to "2241857", "homepage" to "2241851")
+        val projectToId = hashMapOf("web" to "1092060", "content" to "2241857", "homepage" to "2241851", "chat" to "2237399", "quiz" to "2241000")
     }
 
     override fun afterPropertiesSet() {
