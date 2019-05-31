@@ -14,7 +14,7 @@ class CommandParser {
     fun parseCommand(text: String): String {
         return when (parse(text)) {
             PROMO -> "Maaf, belum ada promo"
-            NASIHAT -> gokilUsecase.randomGokil()
+            NASIHAT -> gokilUsecase.randomGokil(text)
             else -> "Maaf, perintah tidak dimengerti :("
         }
     }
